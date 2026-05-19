@@ -1,10 +1,10 @@
 <%@page import="modelo.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-    //Checa usuario guardado
+    //Checa que la memoria traiga un usuario
     Usuario usu = (Usuario) session.getAttribute("usuarioLogueado");
     if(usu == null){
-        //Si saltan el login regresa al index
+        //Regresa al index si no se ha logiado
         response.sendRedirect("index.jsp");
         return;
     }
@@ -13,20 +13,30 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Panel Principal - Refaccionaria</title>
+        <title>Inicio - Refaccionaria</title>
     </head>
     <body>
-        <h2>¡Bienvenido al sistema de la Refaccionaria!</h2>
+        <h2>Bienvenido al sistema de la Refaccionaria</h2>
         
-        <!-- Muestra el nombre y el rol de quien ingreso -->
-        <h3>Hola, <%= usu.getNombre_usuario() %> (Rol: <%= usu.getRol() %>)</h3>
-        
-        <p>Todo bien</p>
+        <h3>Hola <%= usu.getNombre_usuario() %> | Nivel de acceso: <%= usu.getRol() %></h3>
         
         <hr>
-        <p>Menu para el Inventario, Ventas y los movimientos.</p>
         
-        <br>
-        <a href="index.jsp">Regresar al Login (provisional)</a>
+        <h3>Seleccione una opción</h3>
+        <ul>
+            <li>
+                <a href="Inventario.jsp">Checar el Inventario</a>
+            </li>
+            <li>
+                <a href="Ventas.jsp">Cobrar y Ventas</a>
+            </li>
+        </ul>
+        
+        <hr>
+        
+        <form action="LogoutServlet" method="POST">
+            <input type="submit" value="Cerrar sesión y salir">
+        </form>
+        
     </body>
 </html>
