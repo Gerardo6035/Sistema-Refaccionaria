@@ -62,3 +62,14 @@ CREATE TABLE HistorialMovimientos (
     CONSTRAINT fk_historial_usuario FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario),
     CONSTRAINT fk_historial_inventario FOREIGN KEY (id_inventario) REFERENCES Inventario(id_inventario)
 );
+
+-- Tabla de refacciones
+CREATE TABLE refaccion (
+    id_refaccion SERIAL PRIMARY KEY, 
+    codigo VARCHAR(50) UNIQUE NOT NULL,
+    nombre VARCHAR(100) NOT NULL,
+    descripcion TEXT,
+    precio DECIMAL(10, 2) NOT NULL,
+    stock INT NOT NULL,
+    categoria VARCHAR(50)
+);
