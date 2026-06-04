@@ -25,7 +25,7 @@
         <h3>Seleccione una opción</h3>
         <ul>
             <li>
-                <a href="Inventario.jsp">Checar el Inventario</a>
+                <a href="RefaccionController?accion=listar">Checar el Inventario</a>
             </li>
             <li>
                 <a href="Ventas.jsp">Cobrar y Ventas</a>
