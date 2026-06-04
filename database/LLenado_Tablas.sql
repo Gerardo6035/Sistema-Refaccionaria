@@ -22,3 +22,8 @@ INSERT INTO Inventario (id_producto, stock_actual, stock_minimo) VALUES
 INSERT INTO HistorialMovimientos (id_usuario, id_inventario, tipo_movimiento) VALUES 
 (1, 1, 'Carga Inicial de Inventario'),
 (1, 2, 'Carga Inicial de Inventario');
+
+-- Datos para refacciones
+INSERT INTO refaccion (codigo, nombre, precio, stock, categoria)
+VALUES ('bujia-ngk-01', 'Bujía NGK Iridium', 150.50, 50, 'Motor'),
+       ('aceite-mobil-5w30', 'Aceite Mobil 1 5W-30', 850.00, 20, 'Lubricantes');
