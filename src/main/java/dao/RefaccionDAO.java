@@ -157,4 +157,33 @@ public class RefaccionDAO
             return false;
         }
     }
+
+    //Metodo para buscar una refaccion por su codigo (para el punto de venta)
+    public Refaccion buscarCodigo(String codigo) 
+    {
+        Refaccion ref = new Refaccion();
+        String sql = "SELECT * FROM refaccion WHERE codigo = ?";
+        
+        try 
+        {
+            con = conObj.getConexion();
+            ps = con.prepareStatement(sql);
+            ps.setString(1, codigo);
+            rs = ps.executeQuery();
+            
+            while (rs.next()) 
+            {
+                ref.setId_refaccion(rs.getInt("id_refaccion"));
+                ref.setCodigo(rs.getString("codigo"));
+                ref.setNombre(rs.getString("nombre"));
+                ref.setPrecio(rs.getDouble("precio"));
+                ref.setStock(rs.getInt("stock"));
+            }
+            con.close();
+        } catch (Exception e) 
+        {
+            System.out.println("error al buscar codigo: " + e.getMessage());
+        }
+        return ref;
+    }
 }
