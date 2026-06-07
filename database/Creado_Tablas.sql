@@ -1,5 +1,4 @@
-
--- 1
+-- 1. Tabla de usuarios
 CREATE TABLE Usuario (
     id_usuario SERIAL PRIMARY KEY,
     nombre_usuario VARCHAR(50) NOT NULL,
@@ -7,31 +6,18 @@ CREATE TABLE Usuario (
     rol VARCHAR(20) NOT NULL
 );
 
--- 2
-CREATE TABLE Categoria (
-    id_categoria SERIAL PRIMARY KEY,
-    nombre_categoria VARCHAR(100) NOT NULL
+-- 2. Tabla de refacciones
+CREATE TABLE refaccion (
+    id_refaccion SERIAL PRIMARY KEY, 
+    codigo VARCHAR(50) UNIQUE NOT NULL,
+    nombre VARCHAR(100) NOT NULL,
+    descripcion TEXT,
+    precio DECIMAL(10, 2) NOT NULL,
+    stock INT NOT NULL,
+    categoria VARCHAR(50)
 );
 
--- 3
-CREATE TABLE Producto (
-    id_producto SERIAL PRIMARY KEY,
-    nombre_producto VARCHAR(150) NOT NULL,
-    precio_venta NUMERIC(10, 2) NOT NULL,
-    id_categoria INT,
-    CONSTRAINT fk_producto_categoria FOREIGN KEY (id_categoria) REFERENCES Categoria(id_categoria)
-);
-
--- 4
-CREATE TABLE Inventario (
-    id_inventario SERIAL PRIMARY KEY,
-    id_producto INT UNIQUE,
-    stock_actual INT NOT NULL DEFAULT 0,
-    stock_minimo INT NOT NULL DEFAULT 5,
-    CONSTRAINT fk_inventario_producto FOREIGN KEY (id_producto) REFERENCES Producto(id_producto)
-);
-
--- 5
+-- 3. Tabla para guardar tickets de venta
 CREATE TABLE Venta (
     id_venta SERIAL PRIMARY KEY,
     id_usuario INT,
@@ -40,7 +26,7 @@ CREATE TABLE Venta (
     CONSTRAINT fk_venta_usuario FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario)
 );
 
--- 6
+-- 4. Tabla para guardar las piezas que van dentro del ticket
 CREATE TABLE DetalleVenta (
     id_detalle SERIAL PRIMARY KEY,
     id_venta INT,
@@ -50,26 +36,4 @@ CREATE TABLE DetalleVenta (
     subtotal NUMERIC(10, 2) NOT NULL,
     CONSTRAINT fk_detalle_venta FOREIGN KEY (id_venta) REFERENCES Venta(id_venta),
     CONSTRAINT fk_detalle_refaccion FOREIGN KEY (id_refaccion) REFERENCES refaccion(id_refaccion)
-);
-
--- 7
-CREATE TABLE HistorialMovimientos (
-    id_movimiento SERIAL PRIMARY KEY,
-    id_usuario INT,
-    id_inventario INT,
-    tipo_movimiento VARCHAR(50) NOT NULL,
-    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT fk_historial_usuario FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario),
-    CONSTRAINT fk_historial_inventario FOREIGN KEY (id_inventario) REFERENCES Inventario(id_inventario)
-);
-
--- 8 Tabla de refacciones
-CREATE TABLE refaccion (
-    id_refaccion SERIAL PRIMARY KEY, 
-    codigo VARCHAR(50) UNIQUE NOT NULL,
-    nombre VARCHAR(100) NOT NULL,
-    descripcion TEXT,
-    precio DECIMAL(10, 2) NOT NULL,
-    stock INT NOT NULL,
-    categoria VARCHAR(50)
 );
