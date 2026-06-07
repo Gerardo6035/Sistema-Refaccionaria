@@ -28,7 +28,7 @@
                 <a href="RefaccionController?accion=listar">Checar el Inventario</a>
             </li>
             <li>
-                <a href="Ventas.jsp">Cobrar y Ventas</a>
+                <a href="VentaController?accion=nuevaVenta">Cobrar y Ventas</a>
             </li>
         </ul>
         
