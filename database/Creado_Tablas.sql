@@ -44,12 +44,12 @@ CREATE TABLE Venta (
 CREATE TABLE DetalleVenta (
     id_detalle SERIAL PRIMARY KEY,
     id_venta INT,
-    id_producto INT,
+    id_refaccion INT,
     cantidad INT NOT NULL,
     precio_unitario NUMERIC(10, 2) NOT NULL,
     subtotal NUMERIC(10, 2) NOT NULL,
     CONSTRAINT fk_detalle_venta FOREIGN KEY (id_venta) REFERENCES Venta(id_venta),
-    CONSTRAINT fk_detalle_producto FOREIGN KEY (id_producto) REFERENCES Producto(id_producto)
+    CONSTRAINT fk_detalle_refaccion FOREIGN KEY (id_refaccion) REFERENCES refaccion(id_refaccion)
 );
 
 -- 7
@@ -63,7 +63,7 @@ CREATE TABLE HistorialMovimientos (
     CONSTRAINT fk_historial_inventario FOREIGN KEY (id_inventario) REFERENCES Inventario(id_inventario)
 );
 
--- Tabla de refacciones
+-- 8 Tabla de refacciones
 CREATE TABLE refaccion (
     id_refaccion SERIAL PRIMARY KEY, 
     codigo VARCHAR(50) UNIQUE NOT NULL,
