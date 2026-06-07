@@ -3,18 +3,21 @@ package modelo;
 public class DetalleVenta {
     private int id_detalle;
     private int id_venta;
-    private int id_producto;
+    private int id_refaccion;
     private int cantidad;
     private double precio_unitario;
     private double subtotal;
     
+    //Objeto para poder traer el nombre o codigo de la pieza despues
+    private Refaccion refaccion;
+    
     public DetalleVenta() {
     }
 
-    public DetalleVenta(int id_detalle, int id_venta, int id_producto, int cantidad, double precio_unitario, double subtotal) {
+    public DetalleVenta(int id_detalle, int id_venta, int id_refaccion, int cantidad, double precio_unitario, double subtotal) {
         this.id_detalle = id_detalle;
         this.id_venta = id_venta;
-        this.id_producto = id_producto;
+        this.id_refaccion = id_refaccion;
         this.cantidad = cantidad;
         this.precio_unitario = precio_unitario;
         this.subtotal = subtotal;
@@ -36,12 +39,12 @@ public class DetalleVenta {
         this.id_venta = id_venta;
     }
 
-    public int getId_producto() {
-        return id_producto;
+    public int getId_refaccion() {
+        return id_refaccion;
     }
 
-    public void setId_producto(int id_producto) {
-        this.id_producto = id_producto;
+    public void setId_refaccion(int id_refaccion) {
+        this.id_refaccion = id_refaccion;
     }
 
     public int getCantidad() {
@@ -67,5 +70,12 @@ public class DetalleVenta {
     public void setSubtotal(double subtotal) {
         this.subtotal = subtotal;
     }
-    
+
+    public Refaccion getRefaccion() {
+        return refaccion;
+    }
+
+    public void setRefaccion(Refaccion refaccion) {
+        this.refaccion = refaccion;
+    }
 }
