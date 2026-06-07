@@ -14,11 +14,11 @@ public class RefaccionDAO
     PreparedStatement ps;
     ResultSet rs;
 
-    //Metodo para las refacciones y mostrarlas en una tabla
+    //Metodo para listar todas las refacciones y mostrarlas en la tabla
     public List<Refaccion> listarTodo() 
     {
         List<Refaccion> lista = new ArrayList<>();
-        String sql = "SELECT * FROM refaccion";//Consulta SELECT
+        String sql = "SELECT * FROM refaccion"; // consulta select
         
         try 
         {
@@ -41,7 +41,7 @@ public class RefaccionDAO
             con.close();
         } catch (SQLException e)
         {
-            System.out.println("Error al listar refacciones: " + e.getMessage());
+            System.out.println("error al listar refacciones: " + e.getMessage());
         }
         return lista;
     }
@@ -49,14 +49,13 @@ public class RefaccionDAO
     //Metodo para agregar una refaccion a la base de datos
     public boolean agregar(Refaccion ref) 
     {
-        //INSERT con signos de interrogacion por seguridad
+        //Insert con signos de interrogacion por seguridad
         String sql = "INSERT INTO refaccion (codigo, nombre, descripcion, precio, stock, categoria) VALUES (?, ?, ?, ?, ?, ?)";
         
         try 
         {
             con = conObj.getConexion();
             ps = con.prepareStatement(sql);
-            
             
             ps.setString(1, ref.getCodigo());
             ps.setString(2, ref.getNombre());
@@ -72,7 +71,89 @@ public class RefaccionDAO
             
         } catch (Exception e) 
         {
-            System.out.println("Error al insertar refacción: " + e.getMessage());
+            System.out.println("error al insertar refaccion: " + e.getMessage());
+            return false;
+        }
+    }
+
+    //Metodo para eliminar una refaccion de la base de datos
+    public void eliminar(int id) 
+    {
+        String sql = "DELETE FROM refaccion WHERE id_refaccion = ?";
+        
+        try 
+        {
+            con = conObj.getConexion(); 
+            ps = con.prepareStatement(sql);
+            
+            ps.setInt(1, id);//Pasa el id al signo de interrogacion
+            
+            ps.executeUpdate();//Ejecuta el borrado
+            con.close(); 
+            
+        } catch (Exception e) 
+        {
+            System.out.println("error al eliminar refaccion: " + e.getMessage());
+        }
+    }
+
+    //Metodo que busca una sola pieza por su id para llenar el formulario
+    public Refaccion listarId(int id) 
+    {
+        Refaccion ref = new Refaccion();
+        String sql = "SELECT * FROM refaccion WHERE id_refaccion = ?";
+        
+        try 
+        {
+            con = conObj.getConexion();
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, id);
+            rs = ps.executeQuery();
+            
+            while (rs.next()) 
+            {
+                ref.setId_refaccion(rs.getInt("id_refaccion"));
+                ref.setCodigo(rs.getString("codigo"));
+                ref.setNombre(rs.getString("nombre"));
+                ref.setDescripcion(rs.getString("descripcion"));
+                ref.setPrecio(rs.getDouble("precio"));
+                ref.setStock(rs.getInt("stock"));
+                ref.setCategoria(rs.getString("categoria"));
+            }
+            con.close();
+        } catch (Exception e) 
+        {
+            System.out.println("error al buscar por id: " + e.getMessage());
+        }
+        return ref;
+    }
+
+    //Metodo que ejecuta el update para guardar los cambios
+    public boolean actualizar(Refaccion ref) 
+    {
+        String sql = "UPDATE refaccion SET codigo=?, nombre=?, descripcion=?, precio=?, stock=?, categoria=? WHERE id_refaccion=?";
+        
+        try 
+        {
+            con = conObj.getConexion();
+            ps = con.prepareStatement(sql);
+            
+            ps.setString(1, ref.getCodigo());
+            ps.setString(2, ref.getNombre());
+            ps.setString(3, ref.getDescripcion());
+            ps.setDouble(4, ref.getPrecio());
+            ps.setInt(5, ref.getStock());
+            ps.setString(6, ref.getCategoria());
+            
+            ps.setInt(7, ref.getId_refaccion());
+            
+            ps.executeUpdate();
+            con.close();
+            return true;
+            
+        } catch (Exception e) 
+        {
+            System.out.println("error al actualizar refaccion: " + e.getMessage());
             return false;
         }
     }
