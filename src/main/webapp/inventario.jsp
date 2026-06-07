@@ -20,7 +20,12 @@
     <body>
         <h2>Gestión de Inventario</h2>
         <h3>Hola, <%= usu.getNombre_usuario() %></h3>
-        <p><a href="Principal.jsp">Volver al Menu Principal</a> | <a href="RefaccionController?accion=nuevo">Agregar Nueva Pieza</a></p>
+        <p><a href="Principal.jsp">Volver al Menu Principal</a> |
+            <% if (usu.getRol().equalsIgnoreCase("Administrador"))
+            { %>
+            <a href="RefaccionController?accion=nuevo">Agregar Nueva Pieza</a>
+            <% } %>
+        </p>
         <hr>
         
         <table border="1">
@@ -31,7 +36,10 @@
                     <th>Precio</th>
                     <th>Stock</th>
                     <th>Categoría</th>
+                    <% if (usu.getRol().equalsIgnoreCase("Administrador"))
+                    { %>
                     <th>Acciones</th>
+                    <% } %>
                 </tr>
             </thead>
             <tbody>
@@ -49,10 +57,13 @@
                     <td><%= ref.getPrecio() %></td>
                     <td><%= ref.getStock() %></td>
                     <td><%= ref.getCategoria() %></td>
+                    <% if (usu.getRol().equalsIgnoreCase("Administrador"))
+                    { %>
                     <td>
                         <a href="RefaccionController?accion=editar&id=<%= ref.getId_refaccion() %>">Editar️</a>
                         <a href="RefaccionController?accion=borrar&id=<%= ref.getId_refaccion() %>" onclick="return confirm('¿Seguro que desea borrar esta pieza?')">Borrar️</a>
                     </td>
+                    <% } %>
                 </tr>
                 <%
                         }
