@@ -45,7 +45,6 @@
                     </compilerArguments>
                 </configuration>
             </plugin>
-            <!-- AQUI ESTA LA MAGIA, VERSION ACTUALIZADA -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
@@ -79,6 +78,24 @@
                     </execution>
                 </executions>
             </plugin>
-        </plugins>
+            
+            <plugin>
+                <groupId>org.codehaus.cargo</groupId>
+                <artifactId>cargo-maven3-plugin</artifactId>
+                <version>1.10.10</version>
+                <configuration>
+                    <container>
+                        <containerId>tomcat10x</containerId>
+                        <type>embedded</type>
+                    </container>
+                    <configuration>
+                        <properties>
+                            <cargo.servlet.port>8080</cargo.servlet.port>
+                            <cargo.hostname>0.0.0.0</cargo.hostname>
+                        </properties>
+                    </configuration>
+                </configuration>
+            </plugin>
+            </plugins>
     </build>
 </project>
