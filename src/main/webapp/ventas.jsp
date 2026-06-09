@@ -21,102 +21,137 @@
     Refaccion productoEncontrado = (Refaccion) request.getAttribute("productoEncontrado");
 %>
 <!DOCTYPE html>
-<html>
+<html lang="es">
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Punto de Venta</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Punto de Venta - Refaccionaria</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/estilos.css" rel="stylesheet">
     </head>
     <body>
-        <h2>🛒 Punto de Venta</h2>
-        <a href="Principal.jsp">Regresar al Menú Principal</a>
-        <hr>
 
-        <form action="VentaController" method="POST">
-            <input type="hidden" name="accion" value="buscarProducto">
-            <label>Código de la pieza:</label>
-            <input type="text" name="txtCodigo" required autofocus>
-            <input type="submit" value="Buscar">
-        </form>
-        <br>
-
-        <% if (productoEncontrado != null && productoEncontrado.getNombre() != null) { %>
-            <div style="background-color: #e6f7ff; padding: 10px; border: 1px solid #91d5ff;">
-                <form action="VentaController" method="POST">
-                    <input type="hidden" name="accion" value="agregarCarrito">
-                    
-                    <input type="hidden" name="txtIdRefaccion" value="<%= productoEncontrado.getId_refaccion() %>">
-                    <input type="hidden" name="txtNombre" value="<%= productoEncontrado.getNombre() %>">
-                    <input type="hidden" name="txtPrecio" value="<%= productoEncontrado.getPrecio() %>">
-                    <input type="hidden" name="txtCodigoOriginal" value="<%= productoEncontrado.getCodigo() %>">
-                    
-                    <strong>Pieza:</strong> <%= productoEncontrado.getNombre() %> | 
-                    <strong>Precio:</strong> $<%= productoEncontrado.getPrecio() %> | 
-                    <strong>Stock disp:</strong> <%= productoEncontrado.getStock() %> <br><br>
-                    
-                    <label>Cantidad a vender:</label>
-                    <input type="number" name="txtCantidad" value="1" min="1" max="<%= productoEncontrado.getStock() %>" required>
-                    <input type="submit" value="Agregar al Carrito">
-                </form>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+            <div class="container">
+                <a class="navbar-brand fw-bold" href="#">🛒 Punto de Venta</a>
+                <div class="d-flex text-white align-items-center">
+                    <span class="me-4">👤 Cajero: <%= usu.getNombre_usuario() %></span>
+                    <a href="Principal.jsp" class="btn btn-outline-light btn-sm">Menu Principal</a>
+                </div>
             </div>
-        <% } 
-           else if (productoEncontrado != null)
-           { %>
-            <p style="color: red;">❌ No se encontro ninguna pieza con ese codigo o no hay stock.</p>
-        <% } %>
+        </nav>
 
-        <hr>
+        <div class="container mt-4">
+            <div class="row">
+                
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow-sm border-0 mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold text-secondary">🔍 Buscar Pieza</h5>
+                            <form action="VentaController" method="POST" class="d-flex mt-3">
+                                <input type="hidden" name="accion" value="buscarProducto">
+                                <input type="text" name="txtCodigo" class="form-control me-2" placeholder="Codigo..." required autofocus>
+                                <button type="submit" class="btn btn-primary">Buscar</button>
+                            </form>
+                        </div>
+                    </div>
 
-        <h3>Lista de Compras</h3>
-        <table border="1" width="60%">
-            <thead>
-                <tr>
-                    <th>Codigo</th>
-                    <th>Nombre</th>
-                    <th>Precio Unitario</th>
-                    <th>Cantidad</th>
-                    <th>Subtotal</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% 
-                    if (carrito != null && !carrito.isEmpty())
-                    {
-                        for (DetalleVenta det : carrito) 
-                        {
-                %>
-                <tr>
-                    <td><%= det.getRefaccion().getCodigo() %></td>
-                    <td><%= det.getRefaccion().getNombre() %></td>
-                    <td>$<%= det.getPrecio_unitario() %></td>
-                    <td><%= det.getCantidad() %></td>
-                    <td>$<%= det.getSubtotal() %></td>
-                </tr>
-                <% 
-                        }
-                    } else
-                   {
-                %>
-                <tr>
-                    <td colspan="5" align="center">El carrito está vacío</td>
-                </tr>
-                <% } %>
-            </tbody>
-        </table>
+                    <% if (productoEncontrado != null && productoEncontrado.getNombre() != null)
+                       { %>
+                        <div class="card border-primary shadow-sm">
+                            <div class="card-header bg-primary text-white fw-bold">
+                                Pieza Encontrada
+                            </div>
+                            <div class="card-body">
+                                <form action="VentaController" method="POST">
+                                    <input type="hidden" name="accion" value="agregarCarrito">
+                                    <input type="hidden" name="txtIdRefaccion" value="<%= productoEncontrado.getId_refaccion() %>">
+                                    <input type="hidden" name="txtNombre" value="<%= productoEncontrado.getNombre() %>">
+                                    <input type="hidden" name="txtPrecio" value="<%= productoEncontrado.getPrecio() %>">
+                                    <input type="hidden" name="txtCodigoOriginal" value="<%= productoEncontrado.getCodigo() %>">
+                                    
+                                    <h5 class="fw-bold"><%= productoEncontrado.getNombre() %></h5>
+                                    <p class="mb-1 text-success fw-bold fs-5">$<%= productoEncontrado.getPrecio() %></p>
+                                    <p class="text-muted small">Stock disponible: <span class="badge bg-secondary"><%= productoEncontrado.getStock() %> pz</span></p>
+                                    
+                                    <div class="input-group mt-3">
+                                        <span class="input-group-text">Cantidad</span>
+                                        <input type="number" name="txtCantidad" class="form-control" value="1" min="1" max="<%= productoEncontrado.getStock() %>" required>
+                                        <button type="submit" class="btn btn-success">➕ Agregar</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    <% } else if (productoEncontrado != null)
+                       { %>
+                        <div class="alert alert-danger shadow-sm text-center" role="alert">
+                            No se encontro la pieza o no hay stock.
+                        </div>
+                    <% } %>
+                </div>
 
-        <h3>Total a Pagar: $<%= totalVenta %></h3>
-        
-        <% if (carrito != null && !carrito.isEmpty()) 
-           { %>
-            <form action="VentaController" method="POST" style="display:inline;">
-                <input type="hidden" name="accion" value="generarVenta">
-                <input type="submit" value="Cobrar y Finalizar" style="background-color: #52c41a; color: white; padding: 10px; font-weight: bold; cursor: pointer;">
-            </form>
-            
-            <form action="VentaController" method="POST" style="display:inline;">
-                <input type="hidden" name="accion" value="cancelarVenta">
-                <input type="submit" value="Cancelar Venta" style="background-color: #ff4d4f; color: white; padding: 10px; cursor: pointer;">
-            </form>
-        <% } %>
+                <div class="col-md-8">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-header bg-white border-bottom-0 pt-4 pb-0">
+                            <h4 class="fw-bold text-secondary">Lista de Compras</h4>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-striped text-center align-middle mb-0">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>Codigo</th>
+                                            <th>Nombre</th>
+                                            <th>Precio Unit.</th>
+                                            <th>Cantidad</th>
+                                            <th>Subtotal</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% 
+                                            if (carrito != null && !carrito.isEmpty()) {
+                                                for (DetalleVenta det : carrito) {
+                                        %>
+                                        <tr>
+                                            <td class="fw-bold text-muted"><%= det.getRefaccion().getCodigo() %></td>
+                                            <td><%= det.getRefaccion().getNombre() %></td>
+                                            <td>$<%= det.getPrecio_unitario() %></td>
+                                            <td><span class="badge bg-primary rounded-pill px-3"><%= det.getCantidad() %></span></td>
+                                            <td class="fw-bold text-success">$<%= det.getSubtotal() %></td>
+                                        </tr>
+                                        <% 
+                                                }
+                                            } else {
+                                        %>
+                                        <tr>
+                                            <td colspan="5" class="py-5 text-muted">Carrito vacio</td>
+                                        </tr>
+                                        <% } %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <div class="card-footer bg-light p-4 text-end">
+                            <h2 class="fw-bold text-success mb-4">Total: $<%= totalVenta %></h2>
+                            
+                            <% if (carrito != null && !carrito.isEmpty()) { %>
+                                <div class="d-flex justify-content-end gap-2">
+                                    <form action="VentaController" method="POST" class="m-0">
+                                        <input type="hidden" name="accion" value="cancelarVenta">
+                                        <button type="submit" class="btn btn-outline-danger btn-lg">Cancelar Venta</button>
+                                    </form>
+                                    <form action="VentaController" method="POST" class="m-0">
+                                        <input type="hidden" name="accion" value="generarVenta">
+                                        <button type="submit" class="btn btn-success btn-lg shadow">Cobrar y Finalizar</button>
+                                    </form>
+                                </div>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
 
+            </div>
+        </div>
     </body>
 </html>
